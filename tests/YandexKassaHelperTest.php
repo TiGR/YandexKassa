@@ -59,7 +59,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
 
         $helper = $this->getHelper();
         try {
-            $helper->parseRequest(array());
+            $helper->parseRequest(array('invoiceId' => '100500'));
         } catch (BadRequestException $e) {
         }
         $xml = new \SimpleXMLElement(
