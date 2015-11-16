@@ -67,6 +67,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(YandexKassaHelper::STATUS_BAD_REQUEST, (string)$xml['code']);
+        $this->assertEquals('100500', (string)$xml['invoiceId']);
     }
 
     /**
