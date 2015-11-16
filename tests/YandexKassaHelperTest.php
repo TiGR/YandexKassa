@@ -2,6 +2,9 @@
 
 namespace polosatus\YandexKassa;
 
+use polosatus\YandexKassa\Exception\AuthorizationErrorException;
+use polosatus\YandexKassa\Exception\BadRequestException;
+
 class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
 {
     private $shopId = 12345;
@@ -15,7 +18,6 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(__NAMESPACE__.'\\Payment', $helper->getPayment());
     }
 
-    // TODO add tests for response auto status on errors and success
     public function testResponseBuilder()
     {
         $data = $this->getFixtureData();
@@ -30,11 +32,41 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\\DateTime', $date);
 
-        $this->assertEquals(YandexKassaHelper::STATUS_PAYMENT_REJECTED, (string)(string)$xml['code']);
+        $this->assertEquals(YandexKassaHelper::STATUS_PAYMENT_REJECTED, (string)$xml['code']);
         $this->assertEquals($data['invoiceId'], (string)$xml['invoiceId']);
         $this->assertEquals($data['shopId'], (string)$xml['shopId']);
         $this->assertEquals('foo', (string)$xml['message']);
         $this->assertEquals('bar', (string)$xml['techMessage']);
+
+        $xml = new \SimpleXMLElement(
+            $this->getHelper()->buildResponse()
+        );
+
+        $this->assertEquals(YandexKassaHelper::STATUS_SUCCESS, (string)$xml['code']);
+
+        $helper = $this->getHelper();
+        try {
+            $helper->parseRequest(
+                array('md5' => 'foobar', 'action' => YandexKassaHelper::ACTION_CHECK) + $this->getFixtureData()
+            );
+        } catch (AuthorizationErrorException $e) {
+        }
+        $xml = new \SimpleXMLElement(
+            $helper->buildResponse()
+        );
+
+        $this->assertEquals(YandexKassaHelper::STATUS_AUTHORIZATION_ERROR, (string)$xml['code']);
+
+        $helper = $this->getHelper();
+        try {
+            $helper->parseRequest(array());
+        } catch (BadRequestException $e) {
+        }
+        $xml = new \SimpleXMLElement(
+            $helper->buildResponse()
+        );
+
+        $this->assertEquals(YandexKassaHelper::STATUS_BAD_REQUEST, (string)$xml['code']);
     }
 
     /**
@@ -89,6 +121,18 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
     public function testActionValidation()
     {
         $this->getHelper('foo');
+    }
+
+    /**
+     * @expectedException \polosatus\YandexKassa\Exception\BadRequestException
+     * @expectedExceptionMessage No action provided
+     */
+    public function testEmptyActionValidation()
+    {
+        $helper = new YandexKassaHelper($this->shopId, $this->shopPassword);
+        $data = $this->getFixtureData();
+        unset($data['action']);
+        $helper->parseRequest($data);
     }
 
     /**

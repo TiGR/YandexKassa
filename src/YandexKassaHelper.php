@@ -103,13 +103,24 @@ class YandexKassaHelper
             if (!in_array($status, $availableStatuses)) {
                 throw new \InvalidArgumentException('Bad status code provided: '.$status);
             }
+        } else {
+            $status = $this->status;
         }
 
         $xml = new \SimpleXMLElement("<{$this->action}Response />");
         $date = new \DateTime();
         $xml->addAttribute('performedDatetime', $date->format(self::DATETIME_FORMAT));
-        $xml->addAttribute('code', isset($status) ? $status : $this->status);
-        $xml->addAttribute('invoiceId', $this->getPayment()->getInvoiceId());
+        $xml->addAttribute('code', $status);
+
+        // in case we having deal with completely malformed request, missing vital pieces of data.
+        if ($status === self::STATUS_BAD_REQUEST) {
+            if (isset($this->postData['invoiceId'])) {
+                $xml->addAttribute('invoiceId', $this->postData['invoiceId']);
+            }
+        } else {
+            $xml->addAttribute('invoiceId', $this->getPayment()->getInvoiceId());
+        }
+
         $xml->addAttribute('shopId', $this->shopId);
 
         if (isset($message)) {
@@ -164,6 +175,11 @@ class YandexKassaHelper
 
     private function validateRequiredFields()
     {
+        if (!isset($this->postData['action'])) {
+            $this->status = self::STATUS_BAD_REQUEST;
+            throw new BadRequestException('No action provided');
+        }
+
         $requiredFields = array(
             'requestDatetime',
             'action',
@@ -183,9 +199,7 @@ class YandexKassaHelper
             'paymentType',
         );
 
-        $action = (isset($this->postData['action']) ? $this->postData['action'] : null);
-
-        switch ($action) {
+        switch ($this->postData['action']) {
             case self::ACTION_AVISO:
                 $requiredFields[] = 'paymentDatetime';
                 break;
