@@ -87,19 +87,20 @@ class YandexKassaHelper
     {
         if (isset($status)) {
             $status = (int)$status;
-            $availableStatuses = [
+            $availableStatuses = array(
                 self::STATUS_SUCCESS,
                 self::STATUS_AUTHORIZATION_ERROR,
                 self::STATUS_BAD_REQUEST,
                 self::STATUS_PAYMENT_REJECTED,
-            ];
+            );
             if (!in_array($status, $availableStatuses)) {
                 throw new \InvalidArgumentException('Bad status code provided: '.$status);
             }
         }
 
         $xml = new \SimpleXMLElement("<{$this->action}Response />");
-        $xml->addAttribute('performedDatetime', (new \DateTime())->format(self::DATETIME_FORMAT));
+        $date = new \DateTime();
+        $xml->addAttribute('performedDatetime', $date->format(self::DATETIME_FORMAT));
         $xml->addAttribute('code', isset($status) ? $status : $this->status);
         $xml->addAttribute('invoiceId', $this->getPayment()->getInvoiceId());
         $xml->addAttribute('shopId', $this->shopId);
@@ -156,7 +157,7 @@ class YandexKassaHelper
 
     private function validateRequiredFields()
     {
-        $requiredFields = [
+        $requiredFields = array(
             'requestDatetime',
             'action',
             'md5',
@@ -173,7 +174,7 @@ class YandexKassaHelper
             'shopSumBankPaycash',
             'paymentPayerCode',
             'paymentType',
-        ];
+        );
 
         switch ($this->postData['action']) {
             case self::ACTION_AVISO:
@@ -189,7 +190,8 @@ class YandexKassaHelper
                 break;
         }
 
-        if (!empty($missingFields = array_diff($requiredFields, array_keys($this->postData)))) {
+        $missingFields = array_diff($requiredFields, array_keys($this->postData));
+        if (!empty($missingFields)) {
             $this->status = self::STATUS_BAD_REQUEST;
             throw new BadRequestException('Missing required fields: '.implode(', ', $missingFields));
         }

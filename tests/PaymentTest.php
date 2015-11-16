@@ -10,9 +10,9 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
         $payment = new Payment($data);
 
-        $this->assertInstanceOf(Sum::class, $payment->getOrderSum());
-        $this->assertInstanceOf(Sum::class, $payment->getShopSum());
-        $this->assertInstanceOf(\DateTime::class, $payment->getCreatedDate());
+        $this->assertInstanceOf(__NAMESPACE__.'\\Sum', $payment->getOrderSum());
+        $this->assertInstanceOf(__NAMESPACE__.'\\Sum', $payment->getShopSum());
+        $this->assertInstanceOf('\\DateTime', $payment->getCreatedDate());
 
         $this->assertEquals('2015-11-13T12:34:56-0700', $payment->getCreatedDate()->format(\DateTime::ISO8601));
         $this->assertEquals($data['shopArticleId'], $payment->getShopArticleId());
@@ -25,7 +25,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
 
     private function getData()
     {
-        return [
+        return array(
             'shopArticleId' => '9876543210',
             'invoiceId' => '234567890',
             'customerNumber' => 'user123',
@@ -38,7 +38,7 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
             'shopSumAmount' => 100.00,
             'shopSumCurrencyPaycash' => Sum::CURRENCY_TEST,
             'shopSumBankPaycash' => 1000,
-        ];
+        );
     }
 
 }

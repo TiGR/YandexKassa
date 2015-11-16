@@ -12,11 +12,14 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
         $helper = $this->getHelper(YandexKassaHelper::ACTION_CHECK);
 
         $this->assertEquals(YandexKassaHelper::ACTION_CHECK, $helper->getAction());
-        $this->assertInstanceOf(Payment::class, $helper->getPayment());
+        $this->assertInstanceOf(__NAMESPACE__.'\\Payment', $helper->getPayment());
     }
 
+    // TODO add tests for response auto status on errors and success
     public function testResponseBuilder()
     {
+        $data = $this->getFixtureData();
+
         $xml = new \SimpleXMLElement(
             $this->getHelper()->buildResponse(YandexKassaHelper::STATUS_PAYMENT_REJECTED, 'foo', 'bar')
         );
@@ -25,11 +28,11 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
 
         $date = \DateTime::createFromFormat(YandexKassaHelper::DATETIME_FORMAT, $xml['performedDatetime']);
 
-        $this->assertInstanceOf(\DateTime::class, $date);
+        $this->assertInstanceOf('\\DateTime', $date);
 
         $this->assertEquals(YandexKassaHelper::STATUS_PAYMENT_REJECTED, (string)(string)$xml['code']);
-        $this->assertEquals($this->getFixtureData()['invoiceId'], (string)$xml['invoiceId']);
-        $this->assertEquals($this->getFixtureData()['shopId'], (string)$xml['shopId']);
+        $this->assertEquals($data['invoiceId'], (string)$xml['invoiceId']);
+        $this->assertEquals($data['shopId'], (string)$xml['shopId']);
         $this->assertEquals('foo', (string)$xml['message']);
         $this->assertEquals('bar', (string)$xml['techMessage']);
     }
@@ -49,7 +52,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testPKCS7NotImplemented()
     {
-        $this->getHelper(null, [], YandexKassaHelper::SECURITY_PKCS7);
+        $this->getHelper(null, array(), YandexKassaHelper::SECURITY_PKCS7);
     }
 
     /**
@@ -58,7 +61,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testSecurityModeValidation()
     {
-        $this->getHelper(null, [], 42);
+        $this->getHelper(null, array(), 42);
     }
 
     /**
@@ -67,7 +70,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testShopIdValidation()
     {
-        $this->getHelper(null, ['shopId' => 42]);
+        $this->getHelper(null, array('shopId' => 42));
     }
 
     /**
@@ -93,7 +96,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testMD5CheckValidation()
     {
-        $this->getHelper(null, ['md5' => 0]);
+        $this->getHelper(null, array('md5' => 0));
     }
 
     /**
@@ -102,7 +105,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
      * @param int $securityMode
      * @return YandexKassaHelper
      */
-    private function getHelper($action = null, $defaults = [], $securityMode = YandexKassaHelper::SECURITY_MD5)
+    private function getHelper($action = null, $defaults = array(), $securityMode = YandexKassaHelper::SECURITY_MD5)
     {
         $defaults['action'] = ($action ? $action : YandexKassaHelper::ACTION_CHECK);
 
@@ -123,7 +126,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
 
     private function getFixtureData()
     {
-        return [
+        return array(
             'shopId' => $this->shopId,
             'shopArticleId' => '9876543210',
             'requestDatetime' => '2015-11-13T12:34:53.000-07:00',
@@ -138,6 +141,6 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
             'shopSumAmount' => 100.00,
             'shopSumCurrencyPaycash' => Sum::CURRENCY_TEST,
             'shopSumBankPaycash' => 1000,
-        ];
+        );
     }
 }

@@ -1,6 +1,9 @@
 {
     "name": "polosatus/yandex-kassa",
     "description": "Helper for yandex kassa, helps handling callbacks and requests.",
+    "require": {
+        "php": ">=5.3"
+    },
     "require-dev": {
         "phpunit/phpunit": "^5.0"
     },
@@ -14,8 +17,7 @@
     "autoload": {
         "psr-4": {
             "polosatus\\YandexKassa\\": [
-                "src",
-                "tests"
+                "src"
             ]
         }
     },
