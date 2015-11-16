@@ -121,7 +121,10 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        return new YandexKassaHelper($this->shopId, $this->shopPassword, $data, $securityMode);
+        $helper = new YandexKassaHelper($this->shopId, $this->shopPassword, $securityMode);
+        $helper->parseRequest($data);
+
+        return $helper;
     }
 
     private function getFixtureData()

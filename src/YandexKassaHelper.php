@@ -31,22 +31,29 @@ class YandexKassaHelper
     private $payment;
 
     private $status = 0;
+    private $action;
 
     /**
-     * @param $shopId       int ID  магазина в яндекс кассе.
+     * @param $shopId       int     ID магазина в яндекс кассе.
      * @param $shopPassword string  пароль магазина в Яндекс Кассе
-     * @param $postData     array   POST данные полученного запроса
      * @param $securityMode int     Тип подписи сообщений - SECURITY_MD5 или SECURITY_PKCS7
      */
-    public function __construct($shopId, $shopPassword, array $postData, $securityMode = self::SECURITY_MD5)
+    public function __construct($shopId, $shopPassword, $securityMode = self::SECURITY_MD5)
     {
         $this->shopId = $shopId;
         $this->shopPassword = $shopPassword;
-        $this->postData = $postData;
 
         $securityMode = (int)$securityMode;
 
         $this->securityMode = $securityMode;
+    }
+
+    /**
+     * @param $postData array POST данные полученного запроса
+     */
+    public function parseRequest(array $postData)
+    {
+        $this->postData = $postData;
 
         $this->validateRequest();
 
