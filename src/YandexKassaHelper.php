@@ -183,7 +183,9 @@ class YandexKassaHelper
             'paymentType',
         );
 
-        switch ($this->postData['action']) {
+        $action = (isset($this->postData['action']) ? $this->postData['action'] : null);
+
+        switch ($action) {
             case self::ACTION_AVISO:
                 $requiredFields[] = 'paymentDatetime';
                 break;
