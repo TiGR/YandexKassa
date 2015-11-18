@@ -20,17 +20,35 @@ class Payment
     /** @var array $data */
     private $data;
 
-    /** @var \DateTime $createdDate */
-    private $createdDate;
+    /** @var \DateTime $requestDatetime */
+    private $requestDatetime;
 
-    public function __construct(array $data)
+    /** @var \DateTime $datetime */
+    private $datetime;
+
+    /** @var \DateTime $orderCreatedDate */
+    private $orderCreatedDate;
+
+    public function __construct(array $data = null)
     {
+        if (!empty($data)) {
+            $this->loadData($data);
+        }
+    }
+
+    public function loadData(array $data)
+    {
+        $this->setRequestDatetime($data['requestDatetime']);
         $this->setShopArticleId($data['shopArticleId']);
         $this->setInvoiceId($data['invoiceId']);
         $this->setCustomerNumber($data['customerNumber']);
-        $this->setPaymentPayerCode($data['paymentPayerCode']);
-        $this->setPaymentType($data['paymentType']);
-        $this->setCreatedDate($data['orderCreatedDatetime']);
+        $this->setPayerCode($data['paymentPayerCode']);
+        $this->setType($data['paymentType']);
+        $this->setOrderCreatedDate($data['orderCreatedDatetime']);
+
+        if (isset($data['paymentDatetime'])) {
+            $this->setDatetime($data['paymentDatetime']);
+        }
 
         if (isset($data['orderNumber'])) {
             $this->setOrderNumber($data['orderNumber']);
@@ -90,21 +108,17 @@ class Payment
     /**
      * @return \DateTime
      */
-    public function getCreatedDate()
+    public function getOrderCreatedDate()
     {
-        return $this->createdDate;
+        return $this->orderCreatedDate;
     }
 
     /**
      * @param $createdDate
      */
-    public function setCreatedDate($createdDate)
+    public function setOrderCreatedDate($createdDate)
     {
-        if (!$createdDate instanceof \DateTime) {
-            $createdDate = new \DateTime($createdDate);
-        }
-
-        $this->createdDate = $createdDate;
+        $this->orderCreatedDate = $this->parseDatestamp($createdDate);
     }
 
     /**
@@ -158,7 +172,7 @@ class Payment
     /**
      * @return mixed
      */
-    public function getPaymentPayerCode()
+    public function getPayerCode()
     {
         return $this->paymentPayerCode;
     }
@@ -166,7 +180,7 @@ class Payment
     /**
      * @param mixed $paymentPayerCode
      */
-    public function setPaymentPayerCode($paymentPayerCode)
+    public function setPayerCode($paymentPayerCode)
     {
         $this->paymentPayerCode = $paymentPayerCode;
     }
@@ -174,7 +188,7 @@ class Payment
     /**
      * @return mixed
      */
-    public function getPaymentType()
+    public function getType()
     {
         return $this->paymentType;
     }
@@ -182,8 +196,53 @@ class Payment
     /**
      * @param mixed $paymentType
      */
-    public function setPaymentType($paymentType)
+    public function setType($paymentType)
     {
         $this->paymentType = $paymentType;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getDatetime()
+    {
+        return $this->datetime;
+    }
+
+    /**
+     * @param mixed $datetime
+     */
+    public function setDatetime($datetime)
+    {
+        $this->datetime = $this->parseDatestamp($datetime);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getRequestDatetime()
+    {
+        return $this->requestDatetime;
+    }
+
+    /**
+     * @param mixed $requestDatetime
+     */
+    public function setRequestDatetime($requestDatetime)
+    {
+        $this->requestDatetime = $this->parseDatestamp($requestDatetime);
+    }
+
+    /**
+     * @param $datetime
+     * @return \DateTime
+     */
+    private function parseDatestamp($datetime)
+    {
+        if (!$datetime instanceof \DateTime) {
+            $datetime = new \DateTime($datetime);
+        }
+
+        return $datetime;
     }
 }
