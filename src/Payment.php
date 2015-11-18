@@ -6,6 +6,7 @@ class Payment
 {
     private $shopArticleId;
     private $invoiceId;
+    private $orderNumber;
     private $customerNumber;
     private $paymentPayerCode;
     private $paymentType;
@@ -30,6 +31,10 @@ class Payment
         $this->setPaymentPayerCode($data['paymentPayerCode']);
         $this->setPaymentType($data['paymentType']);
         $this->setCreatedDate($data['orderCreatedDatetime']);
+
+        if (isset($data['orderNumber'])) {
+            $this->setOrderNumber($data['orderNumber']);
+        }
 
         $this->data = $data;
     }
@@ -64,6 +69,22 @@ class Payment
         }
 
         return $this->shopSum;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param mixed $orderNumber
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $this->orderNumber = $orderNumber;
     }
 
     /**
@@ -165,5 +186,4 @@ class Payment
     {
         $this->paymentType = $paymentType;
     }
-
 }

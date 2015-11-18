@@ -20,6 +20,10 @@ class PaymentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['customerNumber'], $payment->getCustomerNumber());
         $this->assertEquals($data['paymentPayerCode'], $payment->getPaymentPayerCode());
         $this->assertEquals($data['paymentType'], $payment->getPaymentType());
+        $this->assertNull($payment->getOrderNumber());
+
+        $payment = new Payment($data + array('orderNumber' => 100500));
+        $this->assertEquals(100500, $payment->getOrderNumber());
     }
 
 
