@@ -1,9 +1,9 @@
 <?php
 
-namespace polosatus\YandexKassa;
+namespace TiGR\YandexKassa;
 
-use polosatus\YandexKassa\Exception\AuthorizationErrorException;
-use polosatus\YandexKassa\Exception\BadRequestException;
+use TiGR\YandexKassa\Exception\AuthorizationErrorException;
+use TiGR\YandexKassa\Exception\BadRequestException;
 
 class YandexKassaHelper
 {

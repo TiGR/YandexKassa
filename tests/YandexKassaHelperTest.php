@@ -1,9 +1,9 @@
 <?php
 
-namespace polosatus\YandexKassa;
+namespace TiGR\YandexKassa;
 
-use polosatus\YandexKassa\Exception\AuthorizationErrorException;
-use polosatus\YandexKassa\Exception\BadRequestException;
+use TiGR\YandexKassa\Exception\AuthorizationErrorException;
+use TiGR\YandexKassa\Exception\BadRequestException;
 
 class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -98,7 +98,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \polosatus\YandexKassa\Exception\BadRequestException
+     * @expectedException \TiGR\YandexKassa\Exception\BadRequestException
      * @expectedExceptionMessage Got wrong shopId. Expected: 12345, got: 42
      */
     public function testShopIdValidation()
@@ -107,7 +107,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \polosatus\YandexKassa\Exception\BadRequestException
+     * @expectedException \TiGR\YandexKassa\Exception\BadRequestException
      * @expectedExceptionMessage Missing required fields: paymentDatetime
      */
     public function testAvisoActionValidation()
@@ -116,7 +116,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \polosatus\YandexKassa\Exception\BadRequestException
+     * @expectedException \TiGR\YandexKassa\Exception\BadRequestException
      * @expectedExceptionMessage Unexpected action value: foo
      */
     public function testActionValidation()
@@ -125,7 +125,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \polosatus\YandexKassa\Exception\BadRequestException
+     * @expectedException \TiGR\YandexKassa\Exception\BadRequestException
      * @expectedExceptionMessage No action provided
      */
     public function testEmptyActionValidation()
@@ -137,7 +137,7 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \polosatus\YandexKassa\Exception\AuthorizationErrorException
+     * @expectedException \TiGR\YandexKassa\Exception\AuthorizationErrorException
      */
     public function testMD5CheckValidation()
     {

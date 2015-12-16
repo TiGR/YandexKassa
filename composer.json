@@ -1,5 +1,5 @@
 {
-    "name": "polosatus/yandex-kassa",
+    "name": "tigr/yandex-kassa",
     "description": "Helper for yandex kassa, helps handling callbacks and requests.",
     "require": {
         "php": ">=5.3"
@@ -17,7 +17,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "polosatus\\YandexKassa\\": [
+            "TiGR\\YandexKassa\\": [
                 "src"
             ]
         }

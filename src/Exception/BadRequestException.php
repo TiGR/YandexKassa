@@ -1,6 +1,6 @@
 <?php
 
-namespace polosatus\YandexKassa\Exception;
+namespace TiGR\YandexKassa\Exception;
 
 class BadRequestException extends \Exception
 {

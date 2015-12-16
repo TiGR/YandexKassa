@@ -1,6 +1,6 @@
 <?php
 
-namespace polosatus\YandexKassa;
+namespace TiGR\YandexKassa;
 
 class PaymentTest extends \PHPUnit_Framework_TestCase
 {
