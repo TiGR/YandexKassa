@@ -135,7 +135,8 @@ class YandexKassaHelper
     }
 
     /**
-     *
+     * @throws AuthorizationErrorException
+     * @throws BadRequestException
      */
     private function validateRequest()
     {
@@ -154,6 +155,7 @@ class YandexKassaHelper
     /**
      * Checking the MD5 sign.
      * @return bool true if MD5 hash is correct
+     * @throws AuthorizationErrorException
      */
     private function checkMD5Signature()
     {
@@ -173,6 +175,9 @@ class YandexKassaHelper
         return true;
     }
 
+    /**
+     * @throws BadRequestException
+     */
     private function validateRequiredFields()
     {
         if (!isset($this->postData['action'])) {

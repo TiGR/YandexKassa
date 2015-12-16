@@ -2,6 +2,6 @@
 
 namespace polosatus\YandexKassa\Exception;
 
-class BadRequestException extends \RuntimeException
+class BadRequestException extends \Exception
 {
 }

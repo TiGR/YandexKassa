@@ -2,6 +2,6 @@
 
 namespace polosatus\YandexKassa\Exception;
 
-class AuthorizationErrorException extends \RuntimeException
+class AuthorizationErrorException extends \Exception
 {
 }
