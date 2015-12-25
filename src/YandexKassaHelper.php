@@ -190,7 +190,6 @@ class YandexKassaHelper
             'action',
             'md5',
             'shopId',
-            'shopArticleId',
             'invoiceId',
             'customerNumber',
             'orderCreatedDatetime',

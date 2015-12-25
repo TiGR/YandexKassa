@@ -39,12 +39,15 @@ class Payment
     public function loadData(array $data)
     {
         $this->setRequestDatetime($data['requestDatetime']);
-        $this->setShopArticleId($data['shopArticleId']);
         $this->setInvoiceId($data['invoiceId']);
         $this->setCustomerNumber($data['customerNumber']);
         $this->setPayerCode($data['paymentPayerCode']);
         $this->setType($data['paymentType']);
         $this->setOrderCreatedDate($data['orderCreatedDatetime']);
+
+        if (isset($data['shopArticleId'])) {
+            $this->setShopArticleId($data['shopArticleId']);
+        }
 
         if (isset($data['paymentDatetime'])) {
             $this->setDatetime($data['paymentDatetime']);

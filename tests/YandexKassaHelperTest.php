@@ -176,7 +176,6 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'shopId' => $this->shopId,
-            'shopArticleId' => '9876543210',
             'requestDatetime' => '2015-11-13T12:34:53.000-07:00',
             'invoiceId' => '234567890',
             'customerNumber' => 'user123',
