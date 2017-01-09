@@ -1,6 +1,7 @@
 # YandexKassa
 
 [![Build Status](https://travis-ci.org/TiGR/YandexKassa.svg?branch=master)](https://travis-ci.org/TiGR/YandexKassa)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.3-8892BF.svg)](https://secure.php.net/)
 [![Coverage Status](https://coveralls.io/repos/TiGR/YandexKassa/badge.svg?branch=master&service=github)](https://coveralls.io/github/TiGR/YandexKassa?branch=master)
 [![Total Downloads](https://poser.pugx.org/tigr/yandex-kassa/downloads)](https://packagist.org/packages/tigr/yandex-kassa)
 [![Latest Stable Version](https://poser.pugx.org/tigr/yandex-kassa/v/stable)](https://packagist.org/packages/tigr/yandex-kassa)
@@ -18,6 +19,10 @@ Helper for yandex kassa, helps handling callbacks and requests.
 
  ```php
 <?php
+
+    use TiGR\YandexKassa\YandexKassaHelper;
+    use TiGR\YandexKassa\Exception\AuthorizationErrorException;
+    use TiGR\YandexKassa\Exception\BadRequestException;
 
     $helper = new YandexKassaHelper(KASSA_SHOP_ID, KASSA_SHOP_PASSWORD);
 
