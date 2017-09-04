@@ -18,6 +18,19 @@ class YandexKassaHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(__NAMESPACE__.'\\Payment', $helper->getPayment());
     }
 
+    public function testHelperActionMethods()
+    {
+        $helper = $this->getHelper(YandexKassaHelper::ACTION_CHECK);
+
+        $this->assertTrue($helper->isCheckOrderAction());
+        $this->assertFalse($helper->isPaymentAvisoAction());
+
+        $helper = $this->getHelper(YandexKassaHelper::ACTION_AVISO, array('paymentDatetime' => date('c')));
+
+        $this->assertFalse($helper->isCheckOrderAction());
+        $this->assertTrue($helper->isPaymentAvisoAction());
+    }
+
     public function testResponseBuilder()
     {
         $data = $this->getFixtureData();

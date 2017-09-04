@@ -61,6 +61,22 @@ class YandexKassaHelper
     }
 
     /**
+     * @return bool возвращает true если это действие проверки заказа
+     */
+    public function isCheckOrderAction()
+    {
+        return $this->getAction() === self::ACTION_CHECK;
+    }
+
+    /**
+     * @return bool возваращает true если это действие подтверждения оплаты
+     */
+    public function isPaymentAvisoAction()
+    {
+        return $this->getAction() === self::ACTION_AVISO;
+    }
+
+    /**
      * @return string
      */
     public function getAction()

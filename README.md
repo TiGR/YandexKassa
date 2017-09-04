@@ -28,7 +28,7 @@ Helper for yandex kassa, helps handling callbacks and requests.
 
     $errorStatus = YandexKassaHelper::STATUS_BAD_REQUEST;
 
-    if ($helper->getAction() == YandexKassaHelper::ACTION_CHECK) {
+    if ($helper->isCheckOrderAction()) {
         $errorStatus = YandexKassaHelper::STATUS_PAYMENT_REJECTED;
     }
 
@@ -53,7 +53,7 @@ Helper for yandex kassa, helps handling callbacks and requests.
 
         // ... do some validation using $payment data ...
 
-        if ($helper->getAction() == YandexKassaHelper::ACTION_AVISO) {
+        if ($helper->isPaymentAvisoAction()) {
             // ... Mark this payment as settled in your system ...
             // ... log successful transaction, if needed ...
             // ... notify user of successful transaction. if needed ...
